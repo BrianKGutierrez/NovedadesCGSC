@@ -1,0 +1,20 @@
+.img{
+    width: 4rem;
+    object-fit: cover;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+.tu{
+   
+    justify-items: center;
+    align-items: center;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding-top: auto; 
+}
+/* Asegurarse de que el contenedor dentro del header ocupe todo el ancho */
+.full-width-container {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}

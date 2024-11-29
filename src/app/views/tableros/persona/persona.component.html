@@ -1,0 +1,201 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Gestión de Personas</h2>
+
+  <form #personaForm="ngForm" (ngSubmit)="selectedPersona.id ? updatePersona() : addPersona()" [ngClass]="{ 'was-validated': isFormIncomplete() }" class="needs-validation" novalidate>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="nombre">Nombre</label>
+          <input [(ngModel)]="selectedPersona.nombre" name="nombre" id="nombre" class="form-control" placeholder="Nombre" required>
+          <div *ngIf="!selectedPersona.nombre" class="invalid-feedback">
+            El nombre es requerido.
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="apellido">Apellido</label>
+          <input [(ngModel)]="selectedPersona.apellido" name="apellido" id="apellido" class="form-control" placeholder="Apellido" required>
+          <div *ngIf="!selectedPersona.apellido" class="invalid-feedback">
+            El apellido es requerido.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="dni">DNI</label>
+          <input [(ngModel)]="selectedPersona.dni" name="dni" id="dni" class="form-control" placeholder="DNI" required>
+          <div *ngIf="!selectedPersona.dni" class="invalid-feedback">
+            El DNI es requerido.
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="telefono">Teléfono</label>
+          <input [(ngModel)]="selectedPersona.telefono" name="telefono" id="telefono" class="form-control" placeholder="Teléfono">
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="provincia">Provincia</label>
+          <input [(ngModel)]="selectedPersona.provincia" name="provincia" id="provincia" class="form-control" placeholder="Provincia" required>
+          <div *ngIf="!selectedPersona.provincia" class="invalid-feedback">
+            La provincia es requerida.
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="departamento">Departamento</label>
+          <select [(ngModel)]="selectedPersona.departamento_id" name="departamento" id="departamento" class="form-control" (change)="getLocalidades(selectedPersona.departamento_id)" required>
+            <option value="" disabled selected>Selecciona un departamento</option>
+            <option *ngFor="let departamento of departamentos" [value]="departamento.id">{{ departamento.nombre }}</option>
+          </select>
+          <div *ngIf="!selectedPersona.departamento_id" class="invalid-feedback">
+            El departamento es requerido.
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="localidad">Localidad</label>
+          <select [(ngModel)]="selectedPersona.localidad_id" name="localidad" id="localidad" class="form-control" required>
+            <option value="" disabled selected>Selecciona una localidad</option>
+            <option *ngFor="let localidad of localidades" [value]="localidad.id">{{ localidad.nombre }}</option>
+          </select>
+          <div *ngIf="!selectedPersona.localidad_id" class="invalid-feedback">
+            La localidad es requerida.
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="codigoPostal">Código Postal</label>
+          <input [(ngModel)]="selectedPersona.codigoPostal" name="codigoPostal" id="codigoPostal" class="form-control" placeholder="Código Postal" required>
+          <div *ngIf="!selectedPersona.codigoPostal" class="invalid-feedback">
+            El código postal es requerido.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="domicilio">Domicilio</label>
+          <input [(ngModel)]="selectedPersona.domicilio" name="domicilio" id="domicilio" class="form-control" placeholder="Domicilio" required>
+          <div *ngIf="!selectedPersona.domicilio" class="invalid-feedback">
+            El domicilio es requerido.
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="fechaNacimiento">Fecha de Nacimiento</label>
+          <input [(ngModel)]="selectedPersona.fechaNacimiento" name="fechaNacimiento" id="fechaNacimiento" class="form-control" placeholder="Fecha de Nacimiento" type="date" required>
+          <div *ngIf="!selectedPersona.fechaNacimiento" class="invalid-feedback">
+            La fecha de nacimiento es requerida.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="sexo">Sexo</label>
+          <select [(ngModel)]="selectedPersona.sexo" name="sexo" id="sexo" class="form-control" required>
+            <option value="" disabled selected>Selecciona una opción</option>
+            <option value="Masculino">Masculino</option>
+            <option value="Femenino">Femenino</option>
+            <option value="Otros">Otros</option>
+          </select>
+          <div *ngIf="!selectedPersona.sexo" class="invalid-feedback">
+            El sexo es requerido.
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="edad">Edad</label>
+          <input [(ngModel)]="selectedPersona.edad" name="edad" id="edad" #edad="ngModel" class="form-control" placeholder="Edad" type="number" required>
+          <div *ngIf="edad.errors?.['required'] && (edad.dirty || edad.touched)" class="invalid-feedback d-block">
+            La edad es requerida.
+          </div>
+          <div *ngIf="edad.errors?.['pattern'] && (edad.dirty || edad.touched)" class="invalid-feedback d-block">
+            Por favor, introduce un número válido para la edad.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+      {{ selectedPersona.id ? 'Actualizar' : 'Agregar' }} Persona
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="resetForm()">Cancelar</button>
+  </form>
+
+  <!-- Buscar por DNI -->
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="searchDni">Buscar por DNI</label>
+        <input [(ngModel)]="searchDni" name="searchDni" id="searchDni" class="form-control" placeholder="DNI">
+      </div>
+    </div>
+    <div class="col-md-6">
+      <button (click)="searchPersonaByDni(searchDni)" class="btn btn-info mt-4">Buscar</button>
+    </div>
+  </div>
+
+  <h3 class="mt-4">Lista de Personas</h3>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>DNI</th>
+          <th>Teléfono</th>
+          <th>Provincia</th>
+          <th>Departamento</th>
+          <th>Localidad</th>
+          <th>Código Postal</th>
+          <th>Domicilio</th>
+          <th>Fecha de Nacimiento</th>
+          <th>Sexo</th>
+          <th>Edad</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let persona of personas">
+          <td>{{ persona.nombre }}</td>
+          <td>{{ persona.apellido }}</td>
+          <td>{{ persona.dni }}</td>
+          <td>{{ persona.telefono }}</td>
+          <td>{{ persona.provincia }}</td>
+          <td>{{ getDepartamentoNombre(persona.departamento_id) }}</td>
+          <td>{{ persona.localidad_nombre || 'Desconocido' }}</td>
+          <td>{{ persona.codigoPostal }}</td>
+          <td>{{ persona.domicilio }}</td>
+          <td>{{ persona.fechaNacimiento | date: 'dd/MM/yyyy' }}</td>
+          <td>{{ persona.sexo }}</td>
+          <td>{{ persona.edad }}</td>
+          
+          <td>
+            <button (click)="editPersona(persona)" class="btn btn-warning btn-sm">Editar</button>
+            <button (click)="deletePersona(persona.id)" class="btn btn-danger btn-sm">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

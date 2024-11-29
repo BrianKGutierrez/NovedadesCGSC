@@ -1,0 +1,122 @@
+<div class="container">
+  <h2>Gestión de Dependencias</h2>
+
+  <form (ngSubmit)="guardarDependencia()">
+    <div class="container">
+      <div class="row">
+        <!-- Columna 1 -->
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="juridiccion">Jurisdicción:</label>
+            <input
+              type="text"
+              id="juridiccion"
+              [(ngModel)]="selectedDependencia.juridiccion"
+              name="juridiccion"
+              class="form-control"
+              required
+            />
+          </div>
+  
+          
+  
+          <div class="form-group">
+            <label for="domicilio">Domicilio:</label>
+            <input
+              type="text"
+              id="domicilio"
+              [(ngModel)]="selectedDependencia.domicilio"
+              name="domicilio"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+  
+        <!-- Columna 2 -->
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="unidad_regional">Unidad Regional:</label>
+            <select
+              id="unidad_regional"
+              [(ngModel)]="selectedDependencia.unidad_regional_id"
+              name="unidad_regional"
+              class="form-select"
+              required
+            >
+              <option *ngFor="let unidad of unidadesRegionales" [value]="unidad.id">
+                {{ unidad.unidad_regional }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="departamento">Departamento:</label>
+            
+            
+            <select
+  id="departamento"
+  [(ngModel)]="selectedDependencia.departamento_id"
+  name="departamento"
+  class="form-select"
+  (change)="getLocalidades(selectedDependencia.departamento_id)"
+  required
+>
+  <option *ngFor="let departamento of departamentos" [value]="departamento.id">
+    {{ departamento.nombre }}
+  </option>
+</select>
+
+          </div>
+          <div class="form-group">
+            <label for="localidad">Localidad:</label>
+            <select
+              id="localidad"
+              [(ngModel)]="selectedDependencia.localidad_id"
+              name="localidad"
+              class="form-select"
+              required
+            >
+              <option *ngFor="let localidad of localidades" [value]="localidad.id">
+                {{ localidad.nombre }}
+              </option>
+            </select>
+          </div>
+  
+          <button type="submit" class="btn btn-success">Guardar Dependencia</button>
+          <button type="button" class="btn btn-secondary" (click)="resetForm()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <hr>
+
+  <h3>Lista de Dependencias</h3>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Jurisdicción</th>
+          <th>Localidad</th>
+          <th>Domicilio</th>
+          <th>Unidad Regional</th>
+          <th>Departamento</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let dep of dependencias">
+          <td>{{ dep.juridiccion }}</td>
+          <td>{{ dep.localidad_nombre }}</td>
+          <td>{{ dep.domicilio }}</td>
+          <td>{{ dep.unidad_regional_nombre }}</td>
+          <td>{{ dep.departamento_nombre }}</td>
+          <td>
+            <button class="btn btn-primary" (click)="editarDependencia(dep)">Editar</button>
+            <button class="btn btn-danger" (click)="eliminarDependencia(dep.id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
